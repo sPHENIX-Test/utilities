@@ -1,0 +1,106 @@
+// Powered by Infostretch 
+
+timestamps {
+
+node () {
+
+	stage ('sPHENIX_Test_CoreSoftware_Build - Checkout') {
+ 	 checkout([$class: 'GitSCM', branches: [[name: '${sha1}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'sPHENIX-bot', url: 'https://github.com/sPHENIX-Test/coresoftware.git']]]) 
+	}
+	stage ('sPHENIX_Test_CoreSoftware_Build - Build') {
+ 	
+// Unable to convert a build step referring to "hudson.plugins.timestamper.TimestamperBuildWrapper". Please verify and convert manually if required.
+// Unable to convert a build step referring to "hudson.plugins.ansicolor.AnsiColorBuildWrapper". Please verify and convert manually if required.
+// Unable to convert a build step referring to "com.cloudbees.jenkins.GitHubSetCommitStatusBuilder". Please verify and convert manually if required.		// Shell build step
+sh """ 
+#!/usr/bin/singularity exec -B /gpfs -B /direct -B /afs -B /sphenix /var/lib/jenkins/images/rhic_sl6-1.1.img tcsh -f
+
+if (-e  cppcheck.xml) then
+	rsync -avl --remove-source-files cppcheck.xml cppcheck.xml.backup
+endif
+
+source /opt/sphenix/core/bin/sphenix_setup.csh -n; 
+which cppcheck; 
+
+cppcheck --enable=all --inconclusive --xml --xml-version=2 ./coresoftware >& cppcheck.xml 
+ """		// Shell build step
+sh """ 
+#!/usr/bin/singularity exec -B /gpfs -B /direct -B /afs -B /sphenix /var/lib/jenkins/images/rhic_sl6-1.1.img tcsh -f
+
+
+if (-e  build/run.log) then
+	rsync -avl --remove-source-files build/run.log build/run.log.backup
+endif
+
+if (-d instal) then
+	rsync -avl --remove-source-files install install.backup
+  	rm -rfv install
+
+endif
+mkdir -pv install
+
+
+cd build; 
+./run.sh 
+ """		// Shell build step
+sh """ 
+#!/usr/bin/singularity exec -B /gpfs -B /direct -B /afs -B /sphenix /var/lib/jenkins/images/rhic_sl6-1.1.img tcsh -f
+
+
+if (-e  test/macros/macros/g4simulations/Fun4All_G4_sPHENIX.valgrind.xml ) then
+	rsync -avl --remove-source-files test/macros/macros/g4simulations/Fun4All_G4_sPHENIX.valgrind.xml test/macros/macros/g4simulations/Fun4All_G4_sPHENIX.valgrind.xml.backup
+endif
+
+
+source setup.sh; 
+cd test/macros/macros/g4simulations/; 
+${WORKSPACE}/run_valgrind.sh Fun4All_G4_sPHENIX 
+ """		// Shell build step
+sh """ 
+#!/usr/bin/singularity exec -B /gpfs -B /direct -B /afs -B /sphenix /var/lib/jenkins/images/rhic_sl6-1.1.img tcsh -f
+
+
+if (-d scanbuild/output) then
+	rsync -avl --remove-source-files --ignore-existing scanbuild/output scanbuild/output.backup
+    rm -rfv scanbuild/output
+endif
+mkdir -pv scanbuild/output
+
+
+cd scanbuild; 
+./run.sh
+# mv scanbuild/output/*/* scanbuild/output/ 
+ """		// Shell build step
+sh """ 
+#!/usr/bin/singularity exec -B /gpfs -B /direct -B /afs -B /sphenix /var/lib/jenkins/images/rhic_sl6-1.1.img tcsh -f
+
+if (-d coverity/output) then
+	rsync -avl --remove-source-files --ignore-existing coverity/output coverity/output.backup
+    rm -rfv coverity/output
+endif
+mkdir -pv coverity/output
+
+
+cd coverity; 
+./run.sh 
+ """ 
+	}
+	stage ('sPHENIX_Test_CoreSoftware_Build - Post build actions') {
+/*
+Please note this is a direct conversion of post-build actions. 
+It may not necessarily work/behave in the same way as post-build actions work.
+A logic review is suggested.
+*/
+// Unable to convert a post-build action referring to "org.jenkinsci.plugins.cppcheck.CppcheckPublisher". Please verify and convert manually if required.
+// Unable to convert a post-build action referring to "hudson.plugins.warnings.WarningsPublisher". Please verify and convert manually if required.
+// Unable to convert a post-build action referring to "hudson.tasks.test.AggregatedTestResultPublisher". Please verify and convert manually if required.
+// Unable to convert a post-build action referring to "jenkins.plugins.clangscanbuild.publisher.ClangScanBuildPublisher". Please verify and convert manually if required.
+// Unable to convert a post-build action referring to "org.jenkinsci.plugins.valgrind.ValgrindPublisher". Please verify and convert manually if required.
+// Unable to convert a post-build action referring to "htmlpublisher.HtmlPublisher". Please verify and convert manually if required.
+// Unable to convert a post-build action referring to "hudson.plugins.analysis.collector.AnalysisPublisher". Please verify and convert manually if required.
+		// Mailer notification
+		step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: 'jhuang@bnl.gov', sendToIndividuals: false])
+ 
+	}
+}
+}
