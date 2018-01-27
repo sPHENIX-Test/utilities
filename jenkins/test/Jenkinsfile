@@ -76,6 +76,8 @@ pipeline {
                             		sh('ls -lvhc')
 									
 																sh('/usr/bin/singularity exec -B /gpfs -B /direct -B /afs -B /sphenix /var/lib/jenkins/images/rhic_sl6-1.1.img tcsh -f cppcheck.sh');
+                            
+                            
                             }
 
                    				 echo 'cppcheck - Done'
@@ -94,9 +96,27 @@ pipeline {
         post{
             
         stage('cppcheck-publish'){
-            
-    				build job: 'Pipe-Test-CppCheck-Publisher', parameters: [[$class: 'StringParameterValue', name: 'xmlPath', value: "${WORKSPACE}/cppcheck/cppcheck.xml"]]
-        }
+	        				agent any
+	        			
+	                steps 
+	                {	
+                        timestamps {
+	                        ansiColor('xterm') {
+	                   				 echo 'cppcheck-publish - Entry'
+                            sh('pwd')
+	                   			 sh ('env');
+                            sh('ls -lvhc')
+                            
+														archiveArtifacts artifacts: "${WORKSPACE}/cppcheck/cppcheck.xml", fingerprint: true
+                            
+		    										build job: 'Pipe-Test-CppCheck-Publisher', parameters: [[$class: 'StringParameterValue', name: 'xmlPath', value: "${WORKSPACE}/cppcheck/cppcheck.xml"]]
+                            
+                            
+	                   				 echo 'cppcheck-publish - Done'
+	                        }
+                        }
+		        			}
+        	}
 
         }
 
