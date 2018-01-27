@@ -1,14 +1,12 @@
-// Powered by Infostretch 
-
-timestamps {
 pipeline {
-    agent any
-    stages { 
-        stage('Example') {
-            steps {
-                echo 'Hello World'
+    timestamps {
+        agent any
+        stages { 
+            stage('Example') {
+                steps {
+                    echo 'Hello World'
+                }
             }
         }
     }
-}
 }
