@@ -2,7 +2,7 @@ pipeline {
 
     agent none
     environment { 
-        JenkinsBase = '${PWD}/jenkins/test/'
+        JenkinsBase = "${env.PWD}/jenkins/test/"
     }
     
         stages { 
