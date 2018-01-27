@@ -1,4 +1,4 @@
-#!/usr/bin/singularity exec -B /gpfs -B /direct -B /afs -B /sphenix /var/lib/jenkins/images/rhic_sl6-1.1.img tcsh -f
+#!tcsh -f
 
 if (-e  cppcheck.xml) then
 	rsync -avl --remove-source-files cppcheck.xml cppcheck.xml.backup
