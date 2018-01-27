@@ -9,7 +9,8 @@ pipeline {
             
                 steps {
                         timestamps {
-                   				 echo 'Hello World'
+                   				 echo 'Example - Entry'
+                   				 echo 'Example - Done'
                         }
                 }
             }
@@ -21,6 +22,8 @@ pipeline {
                 {
                         timestamps {
                         
+                   				 echo 'SCM Checkout - Entry'
+                        
                             dir('coresoftware') {
                                 git url: 'https://github.com/sPHENIX-Test/coresoftware.git'
                             }
@@ -30,6 +33,9 @@ pipeline {
 
                             sh('ls')
                             sh('pwd')
+                            
+                            
+                   				 echo 'SCM Checkout - Done'
                         }
                 }
              }
@@ -45,12 +51,22 @@ pipeline {
 	       
 	                steps 
 	                {
-	                        timestamps {
-	                        
-	
-	                            sh('ls')
-	                            sh('pwd')
-	                        }
+                        timestamps {
+                   				 echo 'cppcheck - Entry'
+                   				 
+                            dir('cppcheck') {
+                            		
+                            		sh('ln -svfb ../coresoftware ./');
+                            		sh('ln -svfb ../cppcheck.sh ./');
+							
+		                            sh('ls')
+		                            sh('pwd')
+									
+																sh('cppcheck.sh');
+                            }
+
+                   				 echo 'cppcheck - Done'
+                        }
 	                }
 	        		}
 	    		}
