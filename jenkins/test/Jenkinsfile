@@ -1,8 +1,8 @@
 pipeline {
-    timestamps {
         agent any
         stages { 
             stage('Example') {
+    timestamps {
                 steps {
                     echo 'Hello World'
                 }
