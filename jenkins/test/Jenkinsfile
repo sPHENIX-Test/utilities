@@ -3,10 +3,23 @@ pipeline {
         stages { 
             stage('Example') {
                 steps {
-    timestamps {
+                        timestamps {
                     echo 'Hello World'
+                        }
                 }
-            }
+            }       
+              stage('SCM Checkout')
+                {
+                        timestamps {
+                            dir('coresoftware') {
+                                git url: 'https://github.com/sPHENIX-Test/coresoftware.git'
+                            }
+                            dir('macros') {
+                                git url: 'https://github.com/sPHENIX-Test/macros.git'
+                            }
+
+                            sh('ls')
+                        }
+                }
         }
-    }
 }
