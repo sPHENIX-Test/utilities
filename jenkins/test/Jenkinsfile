@@ -95,7 +95,7 @@ pipeline {
         
         post{
             
-        stage('cppcheck-publish'){
+        success{
 	        				agent any
 	        			
 	                steps 
