@@ -2,7 +2,7 @@ pipeline {
 
     agent none
     environment { 
-        JenkinsBase = '${WORKSPACE}/jenkins/test/'
+        JenkinsBase = '${PWD}/jenkins/test/'
     }
     
         stages { 
@@ -14,6 +14,9 @@ pipeline {
                         timestamps {
 	                        ansiColor('xterm') {
 	                   				 echo 'Example - Entry'
+                            sh('pwd')
+	                   			 sh ('env');
+                            sh('ls -lvhc')
 	                   				 echo 'Example - Done'
 	                        }
                         }
