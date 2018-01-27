@@ -1,7 +1,10 @@
 pipeline {
 
     agent none
-
+    environment { 
+        JenkinsBase = '${WORKSPACE}/jenkins/test/'
+    }
+    
         stages { 
             stage('Example') 
             {
@@ -64,7 +67,7 @@ pipeline {
                             dir('cppcheck') {
                             		
                             		sh('ln -svfb ../coresoftware ./');
-                            		sh('ln -svfb ../cppcheck.sh ./');
+                            		sh('ln -svfb ${JenkinsBase}/cppcheck.sh ./');
 							
 		                            sh('pwd')
                             		sh('ls -lvhc')
