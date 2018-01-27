@@ -1,8 +1,11 @@
 pipeline {
-        agent any
+
+    agent none
+
         stages { 
             stage('Example') 
             {
+        agent any
             
                 steps {
                         timestamps {
@@ -13,6 +16,7 @@ pipeline {
                    
             stage('SCM Checkout')
             {
+        agent any
                 steps 
                 {
                         timestamps {
@@ -29,22 +33,30 @@ pipeline {
                         }
                 }
              }
+             
+             
+        stage('Build')
+        {
+            parallel {
+            
+	            stage('cppcheck')
+	            {
+	        				agent any
+	       
+	                steps 
+	                {
+	                        timestamps {
+	                        
+	
+	                            sh('ls')
+	                            sh('pwd')
+	                        }
+	                }
+	        		}
+	    		}
+    		}
+             
         }
         
-        stages
-        {
-            stage('cppcheck')
-            {
-                steps 
-                {
-                        timestamps {
-                        
-
-                            sh('ls')
-                            sh('pwd')
-                        }
-                }
-        		}
-    		}
         
 }
