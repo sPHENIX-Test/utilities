@@ -25,8 +25,26 @@ pipeline {
                             }
 
                             sh('ls')
+                            sh('pwd')
                         }
                 }
              }
         }
+        
+        stages
+        {
+            stage('cppcheck')
+            {
+                steps 
+                {
+                        timestamps {
+                        
+
+                            sh('ls')
+                            sh('pwd')
+                        }
+                }
+        		}
+    		}
+        
 }
