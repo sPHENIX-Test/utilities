@@ -82,11 +82,24 @@ pipeline {
                         	}
                         }
 	                }
+	                
+									
+
 	        		}
 	    		}
     		}
              
         }
+        
+        post{
+            
+        stage('cppcheck-publish'){
+            
+    				build job: 'Pipe-Test-CppCheck-Publisher', parameters: [[$class: 'StringParameterValue', name: 'xmlPath', value: "${WORKSPACE}/cppcheck/cppcheck.xml"]]
+        }
+
+        }
+
         
         
 }
