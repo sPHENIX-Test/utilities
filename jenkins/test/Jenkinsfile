@@ -1,16 +1,22 @@
 pipeline {
         agent any
         stages { 
-            stage('Example') {
+            stage('Example') 
+            {
+            
                 steps {
                         timestamps {
-                    echo 'Hello World'
+                   				 echo 'Hello World'
                         }
                 }
-            }       
-              stage('SCM Checkout')
+            }
+                   
+            stage('SCM Checkout')
+            {
+                steps 
                 {
                         timestamps {
+                        
                             dir('coresoftware') {
                                 git url: 'https://github.com/sPHENIX-Test/coresoftware.git'
                             }
@@ -21,5 +27,6 @@ pipeline {
                             sh('ls')
                         }
                 }
+             }
         }
 }
