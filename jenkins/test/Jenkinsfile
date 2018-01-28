@@ -37,8 +37,11 @@ pipeline {
                             dir('coresoftware') {
                                 git url: 'https://github.com/sPHENIX-Test/coresoftware.git'
                             }
-                            dir('macros') {
-                                git url: 'https://github.com/sPHENIX-Test/macros.git'
+                            dir('coresoftware') {
+                                git url: 'https://github.com/sPHENIX-Test/coresoftware.git'
+                            }
+                            dir('online_distribution') {
+                                git url: 'https://github.com/sPHENIX-Test/online_distribution.git'
                             }
 
                             sh('ls -lvhc')
@@ -70,12 +73,13 @@ pipeline {
                             dir('cppcheck') {
                             		
                             		sh('ln -svfb ../coresoftware ./');
+                            		sh('ln -svfb ../online_distribution ./');
                             		sh('ln -svfb ${WORKSPACE}/${JenkinsBase}/cppcheck.sh ./');
 							
 		                            sh('pwd')
                             		sh('ls -lvhc')
 									
-																sh('/usr/bin/singularity exec -B /gpfs -B /direct -B /afs -B /sphenix /var/lib/jenkins/images/rhic_sl6-1.1.img tcsh -f cppcheck.sh');
+//																sh('/usr/bin/singularity exec -B /gpfs -B /direct -B /afs -B /sphenix /var/lib/jenkins/images/rhic_sl6-1.1.img tcsh -f cppcheck.sh');
                             
                             
                             }
@@ -88,6 +92,43 @@ pipeline {
 									
 
 	        		}
+	        		
+	        		
+	            stage('Build-standard')
+	            {
+	        				agent any
+	       
+	                steps 
+	                {
+                        timestamps {
+                        
+	                        ansiColor('xterm') {
+                   				 echo 'Build-standard - Entry'
+                   				 
+                            dir('Build-standard') {
+                            		
+                            		sh('ln -svfb ../coresoftware ./');
+                            		sh('ln -svfb ../online_distribution ./'); 
+                            		sh('ln -svfb ../utils/rebuild/* ./'); 
+                            		                           		
+							
+		                            sh('pwd')
+                            		sh('ls -lvhc')
+									
+																sh('/usr/bin/singularity exec -B /gpfs -B /direct -B /afs -B /sphenix /var/lib/jenkins/images/rhic_sl6-1.1.img tcsh -f build-standard.sh');
+                            
+                            
+                            }
+
+                   				 echo 'Build-standard - Done'
+                        	}
+                        }
+	                }
+	                
+									
+
+	        		}
+	        		
 	    		}
     		}
              
@@ -109,7 +150,7 @@ pipeline {
                             
 														archiveArtifacts artifacts: "${WORKSPACE}/cppcheck/cppcheck.xml", fingerprint: true
                             
-		    										build job: 'Pipe-Test-CppCheck-Publisher', parameters: [[$class: 'StringParameterValue', name: 'xmlPath', value: "${WORKSPACE}/cppcheck/cppcheck.xml"]]
+//		    										build job: 'Pipe-Test-CppCheck-Publisher', parameters: [[$class: 'StringParameterValue', name: 'xmlPath', value: "${WORKSPACE}/cppcheck/cppcheck.xml"]]
                             
                             
 	                   				 echo 'cppcheck-publish - Done'

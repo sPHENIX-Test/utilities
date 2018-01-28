@@ -10,6 +10,6 @@ which cppcheck;
 # cppcheck --enable=all --inconclusive --xml --xml-version=2 -j16 ./coresoftware >& cppcheck.xml 
 # cppcheck -q --enable=warning --enable=style --enable=performance --platform=unix64 --inconclusive --xml --xml-version=2 -j16 -I $ROOTSYS/include/ ./coresoftware >& cppcheck.xml
 # cppcheck -q --enable=warning --enable=style --enable=performance --platform=unix64 --inconclusive --xml --xml-version=2 -j16 --std=c++11 ./coresoftware > & cppcheck.xml
-cppcheck -q --enable=warning --enable=style --enable=performance --platform=unix64 --inconclusive --xml --xml-version=2 -j 16 --std=c++11 ./coresoftware > & cppcheck.xml
+cppcheck -q --enable=warning --enable=style --enable=performance --platform=unix64 --inconclusive --xml --xml-version=2 -j 16 --std=c++11 ./coresoftware ./online_distribution > & cppcheck.xml
 
 
