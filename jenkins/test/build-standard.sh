@@ -26,5 +26,7 @@ which cppcheck;
 #
 #52 21 * * * setenv ROOTSYS /opt/sphenix/core/root-6.06.02 && source /opt/sphenix/core/bin/sphenix_setup.csh play+insure && cp $HOME/krb5.keytab.phnxbld /tmp && kinit -k -t /tmp/krb5.keytab.phnxbld phnxbld && rm /tmp/krb5.keytab.phnxbld && /usr/bin/aklog &&  rm -rf /home/phnxbld/sPHENIX/play+insure && rm -rf /home/phnxbld/sPHENIX/playinsbuild && mkdir -p /home/phnxbld/sPHENIX/playinsbuild && cd /home/phnxbld/sPHENIX/playinsbuild && git clone https://github.com/sPHENIX-Collaboration/utilities ./  >& $HOME/sphenixbld.log &&  cd utils/rebuild && ./build.pl --phenixinstall  --tinderbox   --version='play'  --insure --root6
 #
+mkdir work
 
-echo ./build.pl 
+echo ./build.pl --source=$WORKSPACE --workdir=`pwd`./work
+./build.pl --source=$WORKSPACE --workdir=`pwd`./work
