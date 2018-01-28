@@ -135,7 +135,7 @@ pipeline {
              
         }
         
-        post{
+//        post{
             
 //        success{
 //	        				agent any
@@ -160,7 +160,7 @@ pipeline {
 //		        			}
 //        	}
 
-        }
+//        }
 
         
         
