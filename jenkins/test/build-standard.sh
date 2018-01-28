@@ -30,5 +30,5 @@ mkdir -pv  work/source
 ln -svfb $WORKSPACE/coresoftware work/source
 ln -svfb $WORKSPACE/online_distribution work/online_distribution
 
-echo ./build.pl  --workdir=`pwd`./work
-./build.pl   --workdir=`pwd`./work
+echo ./build.pl  --workdir=`pwd`/work
+./build.pl   --workdir=`pwd`/work
