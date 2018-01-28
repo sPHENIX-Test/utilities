@@ -110,6 +110,7 @@ pipeline {
                             		sh('ln -svfb ../coresoftware ./');
                             		sh('ln -svfb ../online_distribution ./'); 
                             		sh('ln -svfb ../utils/rebuild/* ./'); 
+                            		sh('ln -svfb ${WORKSPACE}/${JenkinsBase}/build-standard.sh ./');
                             		                           		
 							
 		                            sh('pwd')
