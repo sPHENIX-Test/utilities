@@ -72,8 +72,8 @@ pipeline {
                    				 
                             dir('cppcheck') {
                             		
-                            		sh('ln -svfb ../coresoftware ./');
-                            		sh('ln -svfb ../online_distribution ./');
+                            		sh('ln -svfb ${WORKSPACE}/coresoftware ./');
+                            		sh('ln -svfb ${WORKSPACE}/online_distribution ./');
                             		sh('ln -svfb ${WORKSPACE}/${JenkinsBase}/cppcheck.sh ./');
 							
 		                            sh('pwd')
@@ -107,9 +107,9 @@ pipeline {
                    				 
                             dir('Build-standard') {
                             		
-                            		sh('ln -svfb ../coresoftware ./');
-                            		sh('ln -svfb ../online_distribution ./'); 
-                            		sh('ln -svfb ../utils/rebuild/* ./'); 
+                            		sh('ln -svfb ${WORKSPACE}/coresoftware ./');
+                            		sh('ln -svfb ${WORKSPACE}/online_distribution ./'); 
+                            		sh('ln -svfb ${WORKSPACE}/utils/rebuild/* ./'); 
                             		sh('ln -svfb ${WORKSPACE}/${JenkinsBase}/build-standard.sh ./');
                             		                           		
 							
@@ -137,28 +137,28 @@ pipeline {
         
         post{
             
-        success{
-	        				agent any
-	        			
-	                steps 
-	                {	
-                        timestamps {
-	                        ansiColor('xterm') {
-	                   				 echo 'cppcheck-publish - Entry'
-                            sh('pwd')
-	                   			 sh ('env');
-                            sh('ls -lvhc')
-                            
-														archiveArtifacts artifacts: "${WORKSPACE}/cppcheck/cppcheck.xml", fingerprint: true
-                            
-//		    										build job: 'Pipe-Test-CppCheck-Publisher', parameters: [[$class: 'StringParameterValue', name: 'xmlPath', value: "${WORKSPACE}/cppcheck/cppcheck.xml"]]
-                            
-                            
-	                   				 echo 'cppcheck-publish - Done'
-	                        }
-                        }
-		        			}
-        	}
+//        success{
+//	        				agent any
+//	        			
+//	                steps 
+//	                {	
+//                        timestamps {
+//	                        ansiColor('xterm') {
+//	                   				 echo 'cppcheck-publish - Entry'
+//                            sh('pwd')
+//	                   			 sh ('env');
+//                            sh('ls -lvhc')
+//                            
+//														archiveArtifacts artifacts: "${WORKSPACE}/cppcheck/cppcheck.xml", fingerprint: true
+//                            
+////		    										build job: 'Pipe-Test-CppCheck-Publisher', parameters: [[$class: 'StringParameterValue', name: 'xmlPath', value: "${WORKSPACE}/cppcheck/cppcheck.xml"]]
+//                            
+//                            
+//	                   				 echo 'cppcheck-publish - Done'
+//	                        }
+//                        }
+//		        			}
+//        	}
 
         }
 
